@@ -1,0 +1,24 @@
+[app]
+environment = "test"
+developer_mode = false
+mock_when_unconfigured = true
+
+[providers]
+llm = "mock"
+stt = "mock"
+tts = "mock"
+wake_word = "mock"
+web_search = "mock"
+
+[voice]
+language = "en-IN"
+audio_retention = false
+
+[permissions]
+default_mode = "deny"
+workspace_sandbox = true
+approved_workspace_roots = []
+approved_website_origins = []
+
+[storage]
+engine = "sqlite"

@@ -1,0 +1,19 @@
+{
+  "id": "/",
+  "name": "JARVIS Local Assistant",
+  "short_name": "JARVIS",
+  "description": "A local-first assistant connected to an explicitly configured local backend.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#07111c",
+  "theme_color": "#54d4e1",
+  "icons": [
+    {
+      "src": "/icons/jarvis-mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

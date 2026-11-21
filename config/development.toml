@@ -1,0 +1,26 @@
+[app]
+environment = "development"
+developer_mode = true
+mock_when_unconfigured = true
+
+[providers]
+llm = "mock"
+stt = "mock"
+tts = "mock"
+wake_word = "push_to_talk"
+web_search = "mock"
+weather = "open_meteo"
+
+[voice]
+language = "en-IN"
+audio_retention = false
+
+[permissions]
+default_mode = "ask_every_time"
+workspace_sandbox = true
+approved_workspace_roots = []
+approved_website_origins = []
+approved_applications = {}
+
+[storage]
+engine = "sqlite"

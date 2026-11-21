@@ -1,0 +1,60 @@
+{
+  "name": "jarvis-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "out/main/main.js",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "electron-vite dev",
+    "dev:renderer": "vite --config vite.renderer.config.ts",
+    "dev:browser": "vite --mode browser --config vite.renderer.config.ts",
+    "build": "npm run typecheck && npm run typecheck:electron && electron-vite build",
+    "build:browser": "tsc --noEmit -p tsconfig.json && vite build --mode browser --config vite.renderer.config.ts",
+    "build:pwa": "tsc --noEmit -p tsconfig.json && vite build --mode pwa --config vite.renderer.config.ts",
+    "preview": "electron-vite preview",
+    "preview:browser": "vite preview --config vite.renderer.config.ts --host 127.0.0.1 --port 4173 --strictPort",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "typecheck:electron": "tsc --noEmit -p tsconfig.electron.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "package:win:dir": "npm run build && electron-builder --dir --win",
+    "package:win:nsis": "npm run build && electron-builder --win nsis",
+    "package:win:portable": "npm run build && electron-builder --win portable"
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-tabs": "^1.1.3",
+    "@radix-ui/react-tooltip": "^1.1.8",
+    "@tanstack/react-query": "^5.66.0",
+    "ajv": "^8.17.1",
+    "electron-store": "^10.0.1",
+    "framer-motion": "^12.4.7",
+    "lucide-react": "^0.468.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.1.5",
+    "recharts": "^2.15.1",
+    "zod": "^3.24.2",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.6",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@types/node": "^22.13.4",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "electron": "44.6.0",
+    "electron-builder": "26.15.3",
+    "electron-vite": "^3.0.0",
+    "jsdom": "^25.0.1",
+    "tailwindcss": "^4.0.6",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.0",
+    "vitest": "4.1.11"
+  }
+}

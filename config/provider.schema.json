@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jarvis.local/schemas/provider-config.json",
+  "title": "Jarvis provider configuration",
+  "description": "Provider configuration contract. LLM, speech, wake detection, web search, and weather providers are selected explicitly.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "llm": { "$ref": "#/$defs/llmProvider" },
+    "speechToText": { "$ref": "#/$defs/speechProvider" },
+    "textToSpeech": { "$ref": "#/$defs/speechProvider" },
+    "wakeWord": { "$ref": "#/$defs/wakeProvider" },
+    "webSearch": { "$ref": "#/$defs/searchProvider" },
+    "weather": { "$ref": "#/$defs/weatherProvider" }
+  },
+  "$defs": {
+    "credentialReference": {
+      "type": "string",
+      "description": "Reference to an environment variable or operating-system credential store entry; never a secret value."
+    },
+    "llmProvider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider"],
+      "properties": {
+        "provider": { "enum": ["mock", "openai_compatible", "azure_openai", "unconfigured"] },
+        "endpoint": { "type": "string", "format": "uri", "description": "Required for live providers and supplied by the operator; no default endpoint is assumed." },
+        "model": { "type": "string", "description": "Required for OpenAI-compatible providers; model or deployment identifier supplied by the operator." },
+        "apiVersion": { "type": "string" },
+        "credentialRef": { "$ref": "#/$defs/credentialReference" },
+        "timeoutSeconds": { "type": "number", "exclusiveMinimum": 0, "maximum": 120, "default": 30 },
+        "maxTokens": { "type": "integer", "minimum": 1, "maximum": 16384, "default": 2048 }
+      }
+    },
+    "speechProvider": {
+      "type": "object",
+      "description": "STT supports local faster-whisper and explicitly configured Azure Speech. Browser speech synthesis is a local renderer option; other selections may report unavailable.",
+      "additionalProperties": false,
+      "required": ["provider"],
+      "properties": {
+        "provider": { "enum": ["mock", "faster_whisper", "azure", "browser", "piper", "unconfigured"] },
+        "language": { "type": "string", "default": "en-IN" },
+        "credentialRef": { "$ref": "#/$defs/credentialReference" },
+        "modelPath": { "type": "string", "description": "Path to an operator-provided local model; the application never downloads models." },
+        "device": { "enum": ["cpu", "cuda", "auto"], "default": "cpu" },
+        "computeType": { "type": "string", "default": "int8" },
+        "deviceId": { "type": "string" },
+        "voiceId": { "type": "string" },
+        "options": { "type": "object", "additionalProperties": true }
+      }
+    },
+    "wakeProvider": {
+      "type": "object",
+      "description": "Wake detection requires microphone consent and an operator-provided local model file; it is off by default.",
+      "additionalProperties": false,
+      "required": ["provider"],
+      "properties": {
+        "provider": { "enum": ["openwakeword", "push_to_talk", "mock"] },
+        "wakePhrase": { "type": "string", "default": "Jarvis" },
+        "modelPath": { "type": "string", "description": "Existing local ONNX model path. No automatic download is performed." },
+        "threshold": { "type": "number", "minimum": 0, "maximum": 1, "default": 0.65 },
+        "options": { "type": "object", "additionalProperties": true }
+      }
+    }
+    ,"searchProvider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider"],
+      "properties": {
+        "provider": { "enum": ["mock", "brave", "unconfigured"] },
+        "credentialRef": { "$ref": "#/$defs/credentialReference" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "provider": { "const": "brave" } }, "required": ["provider"] },
+          "then": { "required": ["credentialRef"] }
+        }
+      ]
+    },
+    "weatherProvider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider"],
+      "properties": {
+        "provider": { "enum": ["open_meteo", "unconfigured"] }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "llm": { "properties": { "provider": { "const": "openai_compatible" } }, "required": ["provider"] } }, "required": ["llm"] },
+      "then": { "properties": { "llm": { "required": ["endpoint", "model"] } } }
+    },
+    {
+      "if": { "properties": { "llm": { "properties": { "provider": { "const": "azure_openai" } }, "required": ["provider"] } }, "required": ["llm"] },
+      "then": { "properties": { "llm": { "required": ["endpoint", "model", "apiVersion", "credentialRef"] } } }
+    }
+  ]
+}

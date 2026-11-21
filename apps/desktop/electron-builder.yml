@@ -1,0 +1,26 @@
+appId: com.localassistant.desktop
+productName: Local Assistant
+directories:
+  output: release
+files:
+  - out/**/*
+  - package.json
+  - '!**/*.map'
+  - '!**/.env'
+  - '!**/.env.*'
+  - '!**/data/**'
+  - '!**/logs/**'
+  - '!**/tmp/**'
+  - '!**/*.sqlite'
+  - '!**/*.sqlite3'
+asar: true
+artifactName: '${productName}-${version}-${arch}.${ext}'
+win:
+  target:
+    - nsis
+    - portable
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  perMachine: false
+# Supply an original, rights-cleared build/icon.ico before a branded release.

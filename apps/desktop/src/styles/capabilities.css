@@ -1,0 +1,62 @@
+.capability-list-panel {
+  padding: 16px;
+}
+
+.capability-list-panel > .panel-heading {
+  margin-bottom: 9px;
+}
+
+.capability-list {
+  display: grid;
+}
+
+.capability-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 54px;
+  padding: 8px 4px;
+  border-top: 1px solid var(--line);
+}
+
+.capability-copy {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+  gap: 4px;
+}
+
+.capability-copy strong {
+  color: var(--text);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.capability-copy span {
+  color: var(--text-muted);
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+.capability-row > .badge {
+  flex: none;
+  min-width: 92px;
+  justify-content: center;
+  text-transform: capitalize;
+}
+
+.capability-runtime-stats {
+  margin-bottom: 13px;
+}
+
+@media (max-width: 700px) {
+  .capability-row {
+    align-items: flex-start;
+    gap: 9px;
+  }
+
+  .capability-row > .badge {
+    min-width: 78px;
+    margin-top: 1px;
+  }
+}

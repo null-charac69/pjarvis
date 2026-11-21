@@ -1,0 +1,25 @@
+[app]
+environment = "production"
+developer_mode = false
+mock_when_unconfigured = false
+
+[providers]
+llm = ""
+stt = ""
+tts = ""
+wake_word = ""
+web_search = "unconfigured"
+weather = "unconfigured"
+
+[voice]
+language = "en-IN"
+audio_retention = false
+
+[permissions]
+default_mode = "ask_every_time"
+workspace_sandbox = true
+approved_workspace_roots = []
+approved_website_origins = []
+
+[storage]
+engine = "sqlite"
